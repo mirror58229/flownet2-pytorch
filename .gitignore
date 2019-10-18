@@ -5,3 +5,10 @@ _ext
 work
 work/*
 _ext/
+
+out
+.idea
+*.ipr
+*.iws
+*.iml
+atlassian-ide-plugin.xml
