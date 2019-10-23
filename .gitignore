@@ -6,6 +6,10 @@ work
 work/*
 _ext/
 
+checkpoint
+checkpoint/*
+networks
+networks/*
 out
 .idea
 *.ipr
