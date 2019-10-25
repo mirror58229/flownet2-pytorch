@@ -10,6 +10,8 @@ checkpoint
 checkpoint/*
 networks
 networks/*
+datasets
+dataset/*
 out
 .idea
 *.ipr

@@ -35,10 +35,10 @@ class MpiSintel(data.Dataset):
         self.render_size = args.inference_size
         self.replicates = replicates
 
-        flow_root = join(root, 'flow')
+        flow_root = join(root, 'flow/')
         image_root = join(root, dstype)
 
-        file_list = sorted(glob(join(flow_root, '*/*.flo')))
+        file_list = sorted(glob(join(flow_root, '*/*.flo'))) # 路径列表的生成和排序
 
         self.flow_list = []
         self.image_list = []
@@ -48,7 +48,7 @@ class MpiSintel(data.Dataset):
                 # print file
                 continue
 
-            fbase = file[len(flow_root)+1:]
+            fbase = file[len(flow_root):]
             fprefix = fbase[:-8]
             fnum = int(fbase[-8:-4])
 
