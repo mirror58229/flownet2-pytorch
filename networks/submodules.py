@@ -41,6 +41,7 @@ class tofp16(nn.Module):
     def __init__(self):
         super(tofp16, self).__init__()
 
+    # @staticmethod
     def forward(self, input):
         return input.half()
 
@@ -49,6 +50,7 @@ class tofp32(nn.Module):
     def __init__(self):
         super(tofp32, self).__init__()
 
+    # @staticmethod
     def forward(self, input):
         return input.float()
 

@@ -40,7 +40,7 @@ class FlowNet2(nn.Module):
 
         # First Block (FlowNetC)
         self.flownetc = FlowNetC.FlowNetC(args, batchNorm=self.batchNorm)
-        self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear')
+        self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
 
         if args.fp16:
             self.resample1 = nn.Sequential(
@@ -52,7 +52,7 @@ class FlowNet2(nn.Module):
 
         # Block (FlowNetS1)
         self.flownets_1 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
-        self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear')
+        self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
         if args.fp16:
             self.resample2 = nn.Sequential(
                             tofp32(), 
@@ -115,8 +115,9 @@ class FlowNet2(nn.Module):
         weight.data.fill_(0.)
         for i in range(min_dim):
             weight.data[i,i,:,:] = torch.from_numpy(bilinear)
-        return 
+        return
 
+    # @staticmethod
     def forward(self, inputs):
         rgb_mean = inputs.contiguous().view(inputs.size()[:2]+(-1,)).mean(dim=-1).view(inputs.size()[:2] + (1,1,1,))
         
@@ -189,6 +190,7 @@ class FlowNet2C(FlowNetC.FlowNetC):
         super(FlowNet2C,self).__init__(args, batchNorm=batchNorm, div_flow=20)
         self.rgb_max = args.rgb_max
 
+    # @staticmethod
     def forward(self, inputs):
         rgb_mean = inputs.contiguous().view(inputs.size()[:2]+(-1,)).mean(dim=-1).view(inputs.size()[:2] + (1,1,1,))
         
@@ -257,7 +259,8 @@ class FlowNet2S(FlowNetS.FlowNetS):
         super(FlowNet2S,self).__init__(args, input_channels = 6, batchNorm=batchNorm)
         self.rgb_max = args.rgb_max
         self.div_flow = div_flow
-        
+
+    # @staticmethod
     def forward(self, inputs):
         rgb_mean = inputs.contiguous().view(inputs.size()[:2]+(-1,)).mean(dim=-1).view(inputs.size()[:2] + (1,1,1,))
         x = (inputs - rgb_mean) / self.rgb_max
@@ -304,6 +307,7 @@ class FlowNet2SD(FlowNetSD.FlowNetSD):
         self.rgb_max = args.rgb_max
         self.div_flow = div_flow
 
+    # @staticmethod
     def forward(self, inputs):
         rgb_mean = inputs.contiguous().view(inputs.size()[:2]+(-1,)).mean(dim=-1).view(inputs.size()[:2] + (1,1,1,))
         x = (inputs - rgb_mean) / self.rgb_max
@@ -363,7 +367,7 @@ class FlowNet2CS(nn.Module):
 
         # First Block (FlowNetC)
         self.flownetc = FlowNetC.FlowNetC(args, batchNorm=self.batchNorm)
-        self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear')
+        self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
 
         if args.fp16:
             self.resample1 = nn.Sequential(
@@ -375,7 +379,7 @@ class FlowNet2CS(nn.Module):
 
         # Block (FlowNetS1)
         self.flownets_1 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
-        self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear')
+        self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -389,6 +393,7 @@ class FlowNet2CS(nn.Module):
                 init.xavier_uniform(m.weight)
                 # init_deconv_bilinear(m.weight)
 
+    # @staticmethod
     def forward(self, inputs):
         rgb_mean = inputs.contiguous().view(inputs.size()[:2]+(-1,)).mean(dim=-1).view(inputs.size()[:2] + (1,1,1,))
         
@@ -428,7 +433,7 @@ class FlowNet2CSS(nn.Module):
 
         # First Block (FlowNetC)
         self.flownetc = FlowNetC.FlowNetC(args, batchNorm=self.batchNorm)
-        self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear')
+        self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
 
         if args.fp16:
             self.resample1 = nn.Sequential(
@@ -440,7 +445,7 @@ class FlowNet2CSS(nn.Module):
 
         # Block (FlowNetS1)
         self.flownets_1 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
-        self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear')
+        self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
         if args.fp16:
             self.resample2 = nn.Sequential(
                             tofp32(), 
@@ -466,6 +471,7 @@ class FlowNet2CSS(nn.Module):
                 init.xavier_uniform(m.weight)
                 # init_deconv_bilinear(m.weight)
 
+    # @staticmethod
     def forward(self, inputs):
         rgb_mean = inputs.contiguous().view(inputs.size()[:2]+(-1,)).mean(dim=-1).view(inputs.size()[:2] + (1,1,1,))
         

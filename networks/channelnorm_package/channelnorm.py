@@ -34,6 +34,7 @@ class ChannelNorm(Module):
         super(ChannelNorm, self).__init__()
         self.norm_deg = norm_deg
 
+    # @staticmethod
     def forward(self, input1):
         return ChannelNormFunction.apply(input1, self.norm_deg)
 

@@ -44,6 +44,7 @@ class FlowNetFusion(nn.Module):
                 init.xavier_uniform_(m.weight)
                 # init_deconv_bilinear(m.weight)
 
+    # @staticmethod
     def forward(self, x):
         out_conv0 = self.conv0(x)
         out_conv1 = self.conv1_1(self.conv1(out_conv0))

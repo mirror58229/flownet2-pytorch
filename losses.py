@@ -14,6 +14,8 @@ def EPE(input_flow, target_flow):
 class L1(nn.Module):
     def __init__(self):
         super(L1, self).__init__()
+
+    # @staticmethod
     def forward(self, output, target):
         lossvalue = torch.abs(output - target).mean()
         return lossvalue
@@ -21,6 +23,8 @@ class L1(nn.Module):
 class L2(nn.Module):
     def __init__(self):
         super(L2, self).__init__()
+
+    # @staticmethod
     def forward(self, output, target):
         lossvalue = torch.norm(output-target,p=2,dim=1).mean()
         return lossvalue
@@ -32,6 +36,7 @@ class L1Loss(nn.Module):
         self.loss = L1()
         self.loss_labels = ['L1', 'EPE']
 
+    # @staticmethod
     def forward(self, output, target):
         lossvalue = self.loss(output, target)
         epevalue = EPE(output, target)
@@ -44,6 +49,7 @@ class L2Loss(nn.Module):
         self.loss = L2()
         self.loss_labels = ['L2', 'EPE']
 
+    # @staticmethod
     def forward(self, output, target):
         lossvalue = self.loss(output, target)
         epevalue = EPE(output, target)
@@ -69,6 +75,7 @@ class MultiScale(nn.Module):
         self.multiScales = [nn.AvgPool2d(self.startScale * (2**scale), self.startScale * (2**scale)) for scale in range(self.numScales)]
         self.loss_labels = ['MultiScale-'+self.l_type, 'EPE'],
 
+    # @staticmethod
     def forward(self, output, target):
         lossvalue = 0
         epevalue = 0
