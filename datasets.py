@@ -28,6 +28,7 @@ class StaticCenterCrop(object):
         return img[(self.h-self.th)//2:(self.h+self.th)//2, (self.w-self.tw)//2:(self.w+self.tw)//2,:]
 
 class MpiSintel(data.Dataset):
+    # 数据集为MpiSintel
     def __init__(self, args, is_cropped = False, root = '', dstype = 'clean', replicates = 1):
         self.args = args
         self.is_cropped = is_cropped
@@ -35,7 +36,7 @@ class MpiSintel(data.Dataset):
         self.render_size = args.inference_size
         self.replicates = replicates
 
-        flow_root = join(root, 'flow/')
+        flow_root = join(root, 'flow/') # 修改过，原来为'flow'
         image_root = join(root, dstype)
 
         file_list = sorted(glob(join(flow_root, '*/*.flo'))) # 路径列表的生成和排序
@@ -48,7 +49,7 @@ class MpiSintel(data.Dataset):
                 # print file
                 continue
 
-            fbase = file[len(flow_root):]
+            fbase = file[len(flow_root):] # 修改过，原来为len(flow_root)+1
             fprefix = fbase[:-8]
             fnum = int(fbase[-8:-4])
 
@@ -318,7 +319,8 @@ class ChairsSDHomTest(ChairsSDHom):
         super(ChairsSDHomTest, self).__init__(args, is_cropped = is_cropped, root = root, dstype = 'test', replicates = replicates)
 
 class ImagesFromFolder(data.Dataset):
-  def __init__(self, args, is_cropped, root = '/path/to/frames/only/folder', iext = 'png', replicates = 1):
+    # 通过修改iext来使用其他的后缀
+  def __init__(self, args, is_cropped, root = '', iext = 'png', replicates = 1):
     self.args = args
     self.is_cropped = is_cropped
     self.crop_size = args.crop_size
@@ -326,12 +328,12 @@ class ImagesFromFolder(data.Dataset):
     self.replicates = replicates
 
     images = sorted( glob( join(root, '*.' + iext) ) )
+
     self.image_list = []
     for i in range(len(images)-1):
         im1 = images[i]
         im2 = images[i+1]
         self.image_list += [ [ im1, im2 ] ]
-
     self.size = len(self.image_list)
 
     self.frame_size = frame_utils.read_gen(self.image_list[0][0]).shape

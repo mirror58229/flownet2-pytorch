@@ -5,7 +5,7 @@ from . import flow_utils
 import imageio
 def read_gen(file_name):
     ext = splitext(file_name)[-1]
-    if ext == '.png' or ext == '.jpeg' or ext == '.ppm' or ext == '.jpg':
+    if ext == '.png' or ext == '.jpeg' or ext == '.ppm' or ext == '.jpg' or ext == '.bmp':
         im = imageio.imread(file_name)
         if im.shape[2] > 3:
             return im[:,:,:3]
